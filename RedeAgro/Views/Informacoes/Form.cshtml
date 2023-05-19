@@ -1,0 +1,128 @@
+﻿@model RedeAgro.Models.ViewModels.MinhasInformacoes
+
+@inject IHttpContextAccessor HttpContextAccessor
+
+@{
+    ViewData["Title"] = "Meus Dados";
+}
+
+
+
+<div class="row mt-3">
+    <div class="col">
+
+        @using (Html.BeginForm("Form", "Informacoes", FormMethod.Post))
+        {
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-primary" href="javascript:history.go(-1)">Voltar</a>
+                </div>
+                <div class="col-8 text-center align-middle pt-2">
+                </div>
+                <div class="col text-end">
+                    <input type="submit" value="Salvar" class="btn btn-danger" />
+                </div>
+            </div>
+
+            <div class="text-warnig">
+                <hr>
+            </div>
+
+            @Html.HiddenFor(m => m.UserId)
+
+            <!--TABS -->
+            <ul class="nav nav-tabs nav-tabs-bordered" id="myTabLote" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="dado-tab" data-bs-toggle="tab" data-bs-target="#dado-tab-pane"
+                        type="button" role="tab" aria-controls="dado-tab-pane" aria-selected="true">
+                        Informações
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="servico-tab" data-bs-toggle="tab" data-bs-target="#servico-tab-pane"
+                        type="button" role="tab" aria-controls="servico-tab-pane" aria-selected="false">
+                        Serviços
+                    </button>
+                </li>
+            </ul>
+
+            <!--Conteudo -->
+            <div class="tab-content" id="myTabLoteContent">
+                <div class="tab-pane fade show active" id="dado-tab-pane" role="tabpanel" aria-labelledby="dado-tab" tabindex="0">
+
+                    <div class="row">
+                        @await Html.PartialAsync("_Dados", Model)
+                    </div>
+
+                </div>
+                <div class="tab-pane fade" id="servico-tab-pane" role="tabpanel" aria-labelledby="servico-tab" tabindex="0">
+
+                    <div id="lista-servico">
+                        @await Html.PartialAsync("_Servicos", Model)
+                    </div>
+
+                    <div class="d-grid gap-1 col-12 mx-auto">
+                        <button id="add-servico" class="btn btn-secondary" type="submit" asp-controller="Lote" asp-action="Form" asp-route-document="true"> <i class="fa-solid fa-plus"></i> Novo </button>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            var schemaPath = '@HttpContextAccessor.HttpContext.Request.Scheme' + '://';
+            var hostPath = '@HttpContextAccessor.HttpContext.Request.Host' + '/';
+            //var areaPath = '@ViewContext.RouteData.Values["area"]' + '/';
+            var controllerPath = '@ViewContext.RouteData.Values["controller"]' + '/';
+            var actionPath = '@ViewContext.RouteData.Values["action"]' + '/';
+            var path = schemaPath + hostPath + controllerPath;
+
+            //SERVIÇOS
+            $(document).ready(function () {
+
+                $(document.body).on('click', '#add-servico', function (e) {
+
+                    e.preventDefault();
+
+                    let dados = $('form').serialize();
+
+                    $.ajax({
+                        url: `${path}AdicionarServico`,
+                        method: "POST",
+                        data: dados,
+                        success: function (data) {
+                            $("#lista-servico").html();
+                            $("#lista-servico").html(data);
+                        }
+                    });
+                });
+
+            });
+
+            $(document.body).on('click', '.remove-servico', function (e) {
+                e.preventDefault();
+                var item = $(this).attr('sequencial-servico');
+
+                var dados = $("form").serializeArray();
+                dados.push({ name: "Sequencial", value: item });
+
+                $.ajax({
+                    url: `${path}RemoverServico`,
+                    method: "POST",
+                    data: dados,
+                    success: function (data) {
+                        $("#lista-servico").html();
+                        $("#lista-servico").html(data);
+                    }
+                });
+            });
+            //END PROPRIEDADES
+        });
+    </script>
+}

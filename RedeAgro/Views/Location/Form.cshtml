@@ -1,0 +1,189 @@
+﻿@model RedeAgro.Models.ViewModels.MinhaLocalizacao
+
+@{
+    ViewData["Title"] = "Meu Local";
+
+    double latitudeUsuario = Model.Latitude?? 0;
+    double longitudeUsuario = Model.Longitude?? 0;
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <strong>Erro</strong> de localização!
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<div class="row mt-3">
+    <div class="col">
+
+        @using (Html.BeginForm("Form", "Location", FormMethod.Post))
+        {
+            @Html.HiddenFor(m => m.UserId)
+
+            <div class="row">
+                <div class="col">
+                    <a class="btn btn-primary" href="javascript:history.go(-1)">Voltar</a>
+                </div>
+                <div class="col-8 text-center align-middle pt-2">
+                    <h1 class="display-4">Minha Localidade</h1>
+                    <h6 class="display-8">* Buscamos sua localização automática - permita ao navegador acesso ao Local</h6>
+                </div>
+                <div class="col text-end">
+                    <input type="submit" value="Salvar" class="btn btn-danger" />
+                </div>
+            </div>
+
+            <div class="text-warnig">
+                <hr>
+            </div>
+
+            <div class="row">
+                <div class="col-6 mb-2">
+                    <label class="form-label"> @Html.DisplayNameFor(model => model.Latitude) </label>
+                    @Html.EditorFor(model => model.Latitude, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                </div>
+
+                <div class="col-6 mb-2">
+                    <label class="form-label"> @Html.DisplayNameFor(model => model.Longitude) </label>
+                    @Html.EditorFor(model => model.Longitude, new { htmlAttributes = new { @class = "form-control", @readonly = true } })
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+
+<div class="text-center">
+    <div id="map">
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+
+            var jsonlatitude = '@Json.Serialize(latitudeUsuario)';
+            var latitudeUser = JSON.parse(jsonlatitude);
+
+            var jsonlongitude = '@Json.Serialize(longitudeUsuario)';
+            var longitudeUser = JSON.parse(jsonlongitude);
+            //console.log("TEM LATITUDE", latitudeUser);
+            //console.log("TEM LONGITUDE", longitudeUser);
+            //console.log("TEM LATITUDE", typeof latitudeUser);
+
+            console.log("Iniciou!");
+
+            var _latitudeAtual = 0;
+            var _longitudeAtual = 0;
+
+            if ("geolocation" in navigator) {
+                const watcher = navigator.geolocation.watchPosition(function (position) {
+
+                    if (latitudeUser != 0 && longitudeUser != 0) {
+                        console.log("Dados do Usuário!");
+                        _latitudeAtual = latitudeUser;
+                        _longitudeAtual = longitudeUser;
+                    }
+                    else{
+                        console.log("Dados do Navegador!");
+                        _latitudeAtual = position.coords.latitude;
+                        _longitudeAtual = position.coords.longitude;
+                    }
+                }, function (error) {
+                    console.log(error);
+                }, { enableHighAccuracy: true, maximumAge: 30000, timeout: 30000 });
+            } else {
+                alert("I'm sorry, but geolocation services are not supported by your browser.");
+            }
+
+            setTimeout(function () {
+                console.log("Terminou de esperar");
+
+                var osmUrl = 'http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+                    osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">BR Serviços </a>',
+                    osm = L.tileLayer(osmUrl, { maxZoom: 18, attribution: osmAttrib }),
+                    map = new L.Map('map', { center: new L.LatLng(_latitudeAtual, _longitudeAtual), zoom: 15 }),
+                    drawnItems = L.featureGroup().addTo(map),
+                    layerGroup = L.layerGroup().addTo(map);
+
+                L.control
+                    .layers
+                    ({
+                        'Cartográfico': osm.addTo(map),
+                        "Vegetação": L.tileLayer('http://www.google.cn/maps/vt?lyrs=s@189&gl=cn&x={x}&y={y}&z={z}', { attribution: 'google' }
+                        )
+                    },
+                        {
+                            //'Visualizar': drawnItems
+                        },
+                        {
+                            position: 'topright',
+                            collapsed: true
+                        }).addTo(map);
+
+
+                L.marker([_latitudeAtual, _longitudeAtual]).addTo(map).addTo(layerGroup);
+
+                map.addControl(new L.Control.Draw({
+                    edit: {
+                        featureGroup: drawnItems,
+                        poly: {
+                            allowIntersection: false
+                        }
+                    },
+                    draw: {
+                        polygon: false,
+                        marker: true, //Ponto de Localização
+                        circlemarker: false, //Circulo de Localização
+                        circle: false, //Circulo de Localização
+                        rectangle: false, //Circulo de Localização
+                        polyline: false, //Circulo de Localização
+                    }
+                }));
+
+                //https://leafletjs.com/examples/layers-control/
+                //https://joeyklee.github.io/geosandbox/hello-drawing-tool.html
+                map.on(L.Draw.Event.CREATED, function (event) {
+                    drawnItems.clearLayers();
+                    layerGroup.clearLayers();
+
+                    var layer = event.layer;
+                    let type = event.layerType;
+
+                    if (type === 'marker') {
+
+
+                        layer.bindPopup('A popup!');
+
+                        var curPos = layer.getLatLng();
+
+                        $("#Latitude").val(curPos.lat);
+                        $("#Latitude").attr("value", curPos.lat);
+                        $("#Longitude").val(curPos.lng);
+                        $("#Longitude").attr("value", curPos.lng);
+
+                        //let i = 0;
+                        //map.eachLayer(function(){
+                        //    i += 1;
+                        //});
+                        //console.log('Map has', i, 'layers.');
+                    }
+
+                    drawnItems.addLayer(layer);
+                });
+
+
+                map.on('draw:drawstart', function (e) {
+                    layerGroup.clearLayers();
+                });
+
+                $(".leaflet-draw-edit-edit").hide();
+                $(".leaflet-draw-edit-remove").hide();
+            }, 5000);
+
+        });
+    </script>
+}

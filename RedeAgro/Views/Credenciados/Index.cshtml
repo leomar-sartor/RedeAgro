@@ -1,0 +1,56 @@
+﻿@model RedeAgro.Models.ViewModels.CredenciadoFiltro
+
+@{
+    ViewData["Title"] = "Credenciados";
+}
+
+@using (Html.BeginForm("Index", "Credenciados", FormMethod.Get))
+{
+    <!-- FILTRO -->
+    <div class="card">
+        <div class="card-header">
+            <div class="col text-end">
+                <i id="openClose" data-visible="true" class="fa-solid fa-chevron-up"></i>
+            </div>
+        </div>
+
+        <div id="filter" class="card-body">
+            <div class="row">
+                <div class="col-2">
+                    <label class="form-label"> @Html.DisplayNameFor(model => model.Raio) </label>
+                    @Html.EditorFor(model => model.Raio, new { htmlAttributes = new { @class = "form-control", @placeholder = "Raio" } })
+                </div>
+                <div class="col-10">
+                    <label class="form-label"> @Html.DisplayNameFor(model => model.Nome) </label>
+                    @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nome" } })
+                </div>
+            </div>
+            @*<div class="text-center mt-4">
+                <button class="btn btn-success" asp-route-pageindex="1" type="submit"> <i class="fa-solid fa-magnifying-glass"></i> Filtrar </button>
+            </div>*@
+        </div>
+    </div>
+    <!-- END FILTRO -->
+}
+
+<div class="container mt-2">
+    <div id="map">
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            var raio = document.getElementById("Raio"); //
+            var nome = document.getElementById("Nome"); //.getAttribute("value")
+
+            //var raioVal = raio.getAttribute("value");
+            //var nomeVal = nome.getAttribute("value");
+
+            //console.log("raioVal", raioVal);
+            //console.log("nomeVal", nomeVal);
+
+            init(raio, nome);
+        });
+    </script>
+}
