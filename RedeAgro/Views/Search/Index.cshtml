@@ -1,1 +1,122 @@
-﻿
+﻿@model RedeAgro.Models.Filtros.SearchFilter
+
+@{
+    ViewData["Title"] = "Encontrar Crendenciados";
+    var Entidade = (System.Object)Model;
+}
+
+<div class="row">
+    <div class="col-4">
+        <a class="btn btn-primary" href="javascript:history.go(-1)">Voltar</a>
+    </div>
+    <div class="col-4 text-center align-middle pt-2">
+        <h6>Credenciados</h6>
+    </div>
+    <div class="col-4 text-end">
+    </div>
+</div>
+
+<div class="text-warnig">
+    <hr>
+</div>
+
+@using (Html.BeginForm("Index", "Search", FormMethod.Get))
+{
+
+    <div class="container">
+
+        <!-- Default Filter -->
+            <div class="accordion" id="accordionExample">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            @using (Html.BeginForm("Index", "Search", FormMethod.Get, new { area = "Produtor" }))
+                            {
+                                <div class="row">
+                                    <div class="col">
+                                        <label class="form-label"> @Html.DisplayNameFor(model => model.Nome) </label>
+                                        @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nome" } })
+                                    </div>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button class="btn btn-success" asp-route-number="1" type="submit"> <i class="fa-solid fa-magnifying-glass"></i> Filtrar </button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+            </div><!-- End Default Filter -->
+
+        <div class="table-responsive">
+
+            <table class="table table-striped table-hover align-middle mt-3">
+                <thead>
+                    <tr>
+                        <th class="text-center col-1" style="min-width: 100px;">#</th>
+                        <th class="col-1 ps-3">Nome</th>
+                    </tr>
+                </thead>
+
+                <tbody class="table-group-divider">
+                    @foreach (var item in Model.Itens)
+                    {
+                        <tr>
+                            <td class="text-center col-1">
+
+                                <a asp-area="Cliente"
+                           asp-action="Imprimir"
+                           asp-route-id="@item.Id"
+                           target="_blank"
+                           class="btn btn-warning"
+                           role="button">
+                                    <i class="fa-solid fa-print fa-xs"></i>
+                                </a>
+
+                            </td>
+                            <td class="col-2 ps-3">@item.Nome</td>
+                        </tr>
+                    }
+                </tbody>
+
+                
+            </table>
+
+           
+        </div>
+        @using (Html.BeginForm("Form", "CentroCusto", FormMethod.Get, new { area = "Produtor" }))
+        {
+            @await Html.PartialAsync("Paginator", (System.Object)Model)
+        }
+    </div>
+
+    @*@await Html.PartialAsync("Paginator", (System.Object)Model)*@
+}
+
+@section Scripts {
+    <script>
+
+        $(document).ready(function () {
+            $('#openClose').on("click", function (event) {
+                let visible = $(this).attr('data-visible');
+
+                if (visible === "true") {
+                    $(this).attr('data-visible', false);
+                    $(this).removeClass("fa-solid fa-chevron-up");
+                    $(this).addClass("fa-solid fa-chevron-down");
+                    $("#filter").hide();
+                }
+                else {
+                    $(this).attr('data-visible', true);
+                    $(this).removeClass("fa-solid fa-chevron-down");
+                    $(this).addClass("fa-solid fa-chevron-up");
+                    $("#filter").show();
+                }
+            });
+        });
+    </script>
+}

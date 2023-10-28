@@ -30,6 +30,8 @@ namespace RedeAgro.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Login([Required][EmailAddress] string email, [Required] string password, string returnurl= "")
         {
+            ModelState.Remove("returnUrl");
+
             if (ModelState.IsValid)
             {
                 await _signInManager.SignOutAsync();
@@ -40,7 +42,7 @@ namespace RedeAgro.Controllers
 
                 if (result.Succeeded)
                 {
-                    return Redirect(returnurl ?? "/");
+                    return RedirectToAction("DashboardPrincipal", "Home");
                 }
 
                 ModelState.AddModelError(nameof(email), "Login Failed: Invalid Email or Password");

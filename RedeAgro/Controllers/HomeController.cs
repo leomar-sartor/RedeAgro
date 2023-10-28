@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RedeAgro.Models;
 using System.Diagnostics;
 
@@ -17,6 +18,14 @@ namespace RedeAgro.Controllers
         {
             return View();
         }
+
+        [Authorize]
+        public IActionResult DashboardPrincipal()
+        {
+            return View();
+        }
+
+        
 
         public IActionResult Privacy()
         {

@@ -6,7 +6,7 @@ using RedeAgro.Models;
 
 namespace RedeAgro.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN, USER")]
     public class SecuredController : Controller
     {
         private readonly ICredenciadoService _credenciadoService;

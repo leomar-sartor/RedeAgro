@@ -59,6 +59,7 @@ namespace RedeAgro.Controllers
         [HttpPost]
         public async Task<IActionResult> Form(MinhasInformacoes form)
         {
+            
             if (!ModelState.IsValid)
                 return View(form);
 

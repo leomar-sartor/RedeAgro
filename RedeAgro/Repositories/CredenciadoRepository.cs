@@ -36,6 +36,15 @@ namespace RedeAgro.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Credenciado>> GetAllAsyncPaginator(int page)
+        {
+            return await _context.Credenciados
+                .AsQueryable()
+                .Skip((page-1) * 10)
+                .Take(10)
+                .ToListAsync();
+        }
+
         public async Task<Credenciado> GetByIdAsync(Guid id)
         {
             return await _context.Credenciados

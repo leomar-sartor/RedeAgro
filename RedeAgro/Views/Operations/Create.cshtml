@@ -1,5 +1,10 @@
 ﻿@model User
 
+@{
+    ViewData["Title"] = "Resgistrar-se";
+}
+
+
 <h1 class="bg-info text-white">Create User</h1>
 <div asp-validation-summary="All" class="text-danger"></div>
 
@@ -20,5 +25,5 @@
         <label asp-for="Password"></label>
         <input asp-for="Password" class="form-control" />
     </div>
-    <button type="submit" class="btn btn-primary">Create</button>
+    <button type="submit" class="btn btn-primary">Registrar</button>
 </form>

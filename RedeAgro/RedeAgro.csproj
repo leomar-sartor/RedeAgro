@@ -8,6 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\Cadastros\**" />
+    <Content Remove="Controllers\Cadastros\**" />
+    <EmbeddedResource Remove="Controllers\Cadastros\**" />
+    <None Remove="Controllers\Cadastros\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.MongoDbCore" Version="3.1.2" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="6.0.9" />
@@ -17,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\Cadastros\" />
+    <Folder Include="wwwroot\assets\Site\" />
   </ItemGroup>
 
 </Project>

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using RedeAgro.Entidade;
 using RedeAgro.Inputs;
 using RedeAgro.Intefaces;
 using RedeAgro.Models;
 using System.ComponentModel.DataAnnotations;
+using System.Data;
 
 //https://www.yogihosting.com/aspnet-core-identity-mongodb/
 namespace RedeAgro.Controllers
@@ -14,14 +16,17 @@ namespace RedeAgro.Controllers
         private readonly ICredenciadoService _credenciadoService;
         private UserManager<UserApp> _userManager;
         private RoleManager<RoleApp> _roleManager;
+        private SignInManager<UserApp> _signInManager;
 
         public OperationsController(
             UserManager<UserApp> userManager,
             RoleManager<RoleApp> roleManager,
+            SignInManager<UserApp> signInManager,
             ICredenciadoService credenciadoService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
+            _signInManager = signInManager;
             _credenciadoService = credenciadoService;
         }
 
@@ -47,15 +52,24 @@ namespace RedeAgro.Controllers
                 IdentityResult result = await _userManager.CreateAsync(appUser, user.Password);
 
                 //Adding User to Admin Role
-                await _userManager.AddToRoleAsync(appUser, "ADMIN");
+                await _userManager.AddToRoleAsync(appUser, "USER");
 
-                if (result.Succeeded) { 
+                if (result.Succeeded) {
+                    await _signInManager.SignOutAsync();
                     ViewBag.Message = "User Created Successfully";
 
                     //Cadastrar Dados
                     var NovoCredenciado = new CredenciadoInput();
                     NovoCredenciado.Id = appUser.Id;
                     await _credenciadoService.AddAsync(NovoCredenciado);
+
+                    var result2 = await _signInManager.PasswordSignInAsync(
+                    user.Email, user.Password, false, false);
+
+                    if (result2.Succeeded)
+                    {
+                        return RedirectToAction("DashboardPrincipal", "Home");
+                    }
                 }
                 else
                 {
@@ -63,11 +77,13 @@ namespace RedeAgro.Controllers
                         ModelState.AddModelError("", error.Description);
                 }
             }
-            return View(user);
+
+            return View();
         }
 
         public IActionResult CreateRole() => View();
 
+        [Authorize(Roles = "ADMIN")]
         [HttpPost]
         public async Task<IActionResult> CreateRole([Required] string name)
         {

@@ -45,6 +45,11 @@ namespace RedeAgro.Services
             return await _credenciadoRepository.GetAllAsync();
         }
 
+        public async Task<IEnumerable<Credenciado>> GetAllAsyncPaginator(int page)
+        {
+            return await _credenciadoRepository.GetAllAsyncPaginator(page);
+        }
+
         public async Task<IEnumerable<CredenciadoLocationValueObject>> GetProximityAsync(double latitude, double longitude, int raio, string? name = "")
         {
             return await _credenciadoRepository.GetProximityAsync(latitude, longitude, raio, name);

@@ -13,7 +13,7 @@ using System.Globalization;
 
 namespace RedeAgro.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN, USER")]
     public class LocationController : Controller
     {
         private readonly IHttpContextAccessor _contextAccessor;

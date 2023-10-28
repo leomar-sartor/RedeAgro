@@ -1,0 +1,50 @@
+﻿@model dynamic
+
+@{
+    var PageIndexMaiorQueUm = Model.PageIndex > 2 ? "" : "d-none";
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var Menor = !Model.HasPreviousPage ? "d-none" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+    var Maior = !Model.HasNextPage ? "d-none" : "";
+    var PageIndexMenorQueToral = Model.PageIndex < (Model.TotalPages-1) ? "" : "d-none";
+    
+}
+
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-center">
+        <li class="page-item">
+            <button class="page-link" asp-route-pageindex="1" type="submit"> <i class="fa-solid fa-angles-left"></i> </button>
+        </li>
+
+        <li class="page-item @prevDisabled">
+            <button class="page-link" asp-route-pageindex="@(Model.PageIndex - 1)" type="submit"> <i class="fa-solid fa-angle-left"></i> </button>
+        </li>
+
+        <li class="page-item @PageIndexMaiorQueUm">
+            <button class="page-link" asp-route-pageindex="@(Model.PageIndex - 2)" type="submit"> @(Model.PageIndex - 2) </button>
+        </li>
+
+        <li class="page-item @Menor">
+            <button class="page-link" asp-route-pageindex="@(Model.PageIndex - 1)" type="submit"> @(Model.PageIndex - 1) </button>
+        </li>
+        <li class="page-item active">
+            <a class="page-link">
+                @Model.PageIndex
+            </a>
+        </li>
+        <li class="page-item @Maior">
+            <button class="page-link" asp-route-pageindex="@(Model.PageIndex + 1)" type="submit"> @(Model.PageIndex + 1) </button>
+        </li>
+
+        <li class="page-item @PageIndexMenorQueToral">
+            <button class="page-link" asp-route-pageindex="@(Model.PageIndex + 2)" type="submit"> @(Model.PageIndex + 2) </button>
+        </li>
+
+        <li class="page-item @nextDisabled">
+            <button class="page-link" asp-route-pageindex="@(Model.PageIndex + 1)" type="submit"> <i class="fa-solid fa-angle-right"></i> </button>
+        </li>
+        <li class="page-item">
+            <button class="page-link" asp-route-pageindex="@(Model.TotalPages)" type="submit"> <i class="fa-solid fa-angles-right"></i> </button>
+        </li>
+    </ul>
+</nav>

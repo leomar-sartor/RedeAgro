@@ -1,10 +1,12 @@
 using AspNetCore.Identity.MongoDbCore.Infrastructure;
+using AspNetCore.Identity.MongoDbCore.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Bson.Serialization.Options;
+using RedeAgro;
 using RedeAgro.Config;
 using RedeAgro.Intefaces;
 using RedeAgro.Models;
@@ -34,6 +36,7 @@ ConventionRegistry.Register("DatabaseConventions", pack, t => true);
 //https://stackoverflow.com/questions/57311614/how-create-indexes-for-2-fields-to-make-their-unique-in-collection
 builder.Services
     .AddIdentity<UserApp, RoleApp>()
+    .AddRoles<RoleApp>()
     .AddMongoDbStores<UserApp, RoleApp, Guid>
     (
         mongoDbSettings.ConnectionString, mongoDbSettings.NameDb
@@ -80,5 +83,33 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 //app.MapRazorPages();
+
+var scopeFactory = app.Services.GetRequiredService<IServiceScopeFactory>();
+using (var scope = scopeFactory.CreateScope())
+{
+    List<RoleApp> roles = new List<RoleApp>() {
+        new RoleApp()
+        {
+            Name = "ADMIN"
+        },
+        new RoleApp()
+        {
+            Name = "USER"
+        }
+    };
+
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<RoleApp>>();
+    var userManager = scope.ServiceProvider.GetRequiredService<UserManager<UserApp>>();
+
+    foreach (var role in roles)
+    {
+        if (!await roleManager.RoleExistsAsync(role.Name))
+        {
+            await roleManager.CreateAsync(role);
+        }
+    }
+
+    DataInitializer.CadastrarPrimeirosUsuarios(userManager);
+}
 
 app.Run();

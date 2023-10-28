@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RedeAgro</title>
+    <title>@ViewData["Title"] - Práxis</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 
     
@@ -19,43 +19,19 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RedeAgro</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="DashboardPrincipal">Práxis</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Operations" asp-action="Create">Novo Usuário</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Operations" asp-action="CreateRole">Nova Função</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Secured" asp-action="Index">Identidade</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Location" asp-action="Form">Meu Local</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Credenciados" asp-action="Index">Enc. Credenciado Mapas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Informacoes" asp-action="Form">Meus Dados</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Search" asp-action="Index">Enc. Credenciado Dados</a>
-                        </li>
-                    </ul>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     @{
                         if (User?.Identity?.IsAuthenticated ?? false)
                         {
-                            <h6><span style="color: gray" class="badge badge-primary"> @User.Identity.Name</span></h6>
+                            <h6><span style="color: gray" class="badge badge-primary me-2"> @User.Identity.Name.Split("@")?[0]</span></h6>
                             <a asp-controller="Account" asp-action="Logout" class="btn btn-danger">Sair</a>
                         }
                     }
-                    @*<partial name="_LoginPartial" />*@
                 </div>
             </div>
         </nav>
@@ -68,7 +44,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - RedeAgro - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="text-center"> &copy; 2023 - Práxis </div>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

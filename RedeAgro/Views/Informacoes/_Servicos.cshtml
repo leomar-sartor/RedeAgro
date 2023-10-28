@@ -15,36 +15,41 @@
 
             <!--CORPO-->
             <tbody>
-                @for (int i = 0; i < Model.Servicos.Count; i++)
+                @if (Model.Servicos != null)
                 {
-                    <tr class="row ">
 
-                        @Html.HiddenFor(m => m.Servicos[i].UserId)
-                        @*@Html.HiddenFor(m => m.Servicos[i].Sequencial)*@
+
+                    @for (int i = 0; i < Model.Servicos.Count; i++)
+                    {
+                        <tr class="row ">
+
+                            @Html.HiddenFor(m => m.Servicos[i].UserId)
+                            @*@Html.HiddenFor(m => m.Servicos[i].Sequencial)*@
 
                             <td class="col-2">
                                 @Html.HiddenFor(model => model.Servicos[i].DataCriacao)
-                            @Html.EditorFor(model => model.Servicos[i].DataCriacao, new { htmlAttributes = new { @class = "form-control", @readonly = true} })
+                                @Html.EditorFor(model => model.Servicos[i].DataCriacao, new { htmlAttributes = new { @class = "form-control", @readonly = true} })
                             </td>
 
                             <td class="col-9">
-                            @Html.EditorFor(model => model.Servicos[i].Descricao, new { htmlAttributes = new { @class = "form-control"} })
+                                @Html.EditorFor(model => model.Servicos[i].Descricao, new { htmlAttributes = new { @class = "form-control"} })
                                 <small class="text-muted">
-                                @Html.ValidationMessageFor(model => model.Servicos[i].Descricao, null, new { @class = "text-danger" })
+                                    @Html.ValidationMessageFor(model => model.Servicos[i].Descricao, null, new { @class = "text-danger" })
                                 </small>
                             </td>
                             <td class="text-center col-1">
 
                                 <a asp-area="Produtor"
-                                   asp-action="Form"
-                                   asp-route-id="@@model.Servicos[i].Id"
-                                    class="btn btn-danger remove-servico"
-                                   role="button"
-                                   sequencial-servico="@i" disabled>
+                           asp-action="Form"
+                           asp-route-id="@@model.Servicos[i].Id"
+                           class="btn btn-danger remove-servico"
+                           role="button"
+                           sequencial-servico="@i" disabled>
                                     <i class="fa fa-trash"></i>
                                 </a>
                             </td>
-                    </tr>
+                        </tr>
+                    }
                 }
             </tbody>
         </table>

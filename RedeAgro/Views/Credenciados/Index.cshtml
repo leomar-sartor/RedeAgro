@@ -4,6 +4,18 @@
     ViewData["Title"] = "Credenciados";
 }
 
+<div class="row">
+    <div class="col">
+        <a class="btn btn-primary" href="javascript:history.go(-1)">Voltar</a>
+    </div>
+    <div class="col-8 text-center align-middle pt-2">
+        
+    </div>
+    <div class="col text-end">
+        
+    </div>
+</div>
+
 @using (Html.BeginForm("Index", "Credenciados", FormMethod.Get))
 {
     <!-- FILTRO -->
@@ -25,9 +37,6 @@
                     @Html.EditorFor(model => model.Nome, new { htmlAttributes = new { @class = "form-control", @placeholder = "Nome" } })
                 </div>
             </div>
-            @*<div class="text-center mt-4">
-                <button class="btn btn-success" asp-route-pageindex="1" type="submit"> <i class="fa-solid fa-magnifying-glass"></i> Filtrar </button>
-            </div>*@
         </div>
     </div>
     <!-- END FILTRO -->

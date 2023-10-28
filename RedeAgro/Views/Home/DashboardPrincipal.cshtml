@@ -1,0 +1,100 @@
+﻿@{
+    ViewData["Title"] = "Bem-Vindo";
+}
+
+@*<ul class="navbar-nav flex-grow-1">
+    <li class="nav-item">
+        <a class="nav-link text-dark" asp-area="" asp-controller="Secured" asp-action="Index">Identidade</a>
+    </li>
+</ul>*@
+
+<div class="text-center">
+    <h1 class="display-4">Bem Vindo - Práxis</h1>
+    <p>Encontre prestadores de serviços especializados e solicite orçamentos</p>
+    <p>Prestador de Serviços</p>
+</div>
+
+<div class="row">
+
+    <div class="col-md-2 pt-2">
+        <div class="card mb-2 shadow-sm h-100">
+            <div class="card-body">
+                <p class="card-text m-0 p-0 text-center">
+                    <i class="fa-solid fa-gear" style="color: Tomato;"></i>
+                </p>
+                <p class=" card-text m-0 pt-1 pb-0 text-center">MEUS DADOS</p>
+            </div>
+            @Html.ActionLink("", "Form", "Informacoes", new { area = "" }, new { @class = "stretched-link" })
+        </div>
+    </div>
+
+    <div class="col-md-2 pt-2">
+        <div class="card mb-2 shadow-sm h-100">
+            <div class="card-body">
+                <p class="card-text m-0 p-0 text-center">
+                    <i class="fa-solid fa-gear" style="color: Tomato;"></i>
+                </p>
+                <p class=" card-text m-0 pt-1 pb-0 text-center">MEU LOCAL</p>
+            </div>
+            @Html.ActionLink("", "Form", "Location", new { area = "" }, new { @class = "stretched-link" })
+        </div>
+    </div>
+
+    <div class="col-md-2 pt-2">
+        <div class="card mb-2 shadow-sm h-100">
+            <div class="card-body">
+                <p class="card-text m-0 p-0 text-center">
+                    <i class="fa-solid fa-basket-shopping" style="color: Tomato;"></i>
+                </p>
+                <p class=" card-text m-0 pt-1 pb-0 text-center">ENCONTRAR</p>
+            </div>
+            @Html.ActionLink("", "Index", "Credenciados", new { area = "" }, new { @class = "stretched-link" })
+        </div>
+    </div>
+
+    <div class="col-md-2 pt-2">
+        <div class="card mb-2 shadow-sm h-100">
+            <div class="card-body">
+                <p class="card-text m-0 p-0 text-center">
+                    <i class="fa-solid fa-basket-shopping" style="color: Tomato;"></i>
+                </p>
+                <p class=" card-text m-0 pt-1 pb-0 text-center">CADASTRAR</p>
+            </div>
+            @Html.ActionLink("", "Index", "CreateDemanda", new { area = "" }, new { @class = "stretched-link" })
+        </div>
+    </div>
+
+    <div class="col-md-2 pt-2">
+        <div class="card mb-2 shadow-sm h-100">
+            <div class="card-body">
+                <p class="card-text m-0 p-0 text-center">
+                    <i class="fa-solid fa-cart-shopping" style="color: Tomato;"></i>
+                </p>
+                <p class=" card-text m-0 pt-1 pb-0 text-center">BUSCAR</p>
+            </div>
+            @Html.ActionLink("", "Index", "Search", new { area = "" }, new { @class = "stretched-link" })
+        </div>
+    </div>
+
+    <div class="col-md-2 pt-2">
+        <div class="card mb-2 shadow-sm h-100">
+            <div class="card-body">
+                <p class="card-text m-0 p-0 text-center">
+
+                    @if (@ViewBag.NumeroDeNotificacoes > 0)
+                    {
+                        <div class="text-end"><span class="badge bg-danger">@ViewBag.NumeroDeNotificacoes</span></div>
+                    }
+                    else
+                    {
+                        <div class="text-end"><span class="badge bg-success"> <i class="fa-regular fa-thumbs-up"></i></span></div>
+                    }
+
+                    <h6 class="pt-1 text-center">  <i class="fa-solid fa-bell" style="color: Tomato;"></i> NOTIFICAÇÕES </h6>
+                </p>
+            </div>
+            @Html.ActionLink("", "Index", "Notificacao", new { area = "" }, new { @class = "stretched-link" })
+        </div>
+    </div>
+
+</div>

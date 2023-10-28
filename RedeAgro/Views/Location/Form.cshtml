@@ -187,3 +187,105 @@
         });
     </script>
 }
+
+
+                       @* map.on(L.Draw.Event.CREATED, function (event) {
+
+
+                    check = Object.keys(drawnItems._layers).length;
+                    console.log(check);
+
+                    let desenhos = drawnItems._layers;
+
+                    $.each(desenhos, function (key, value) {
+                        console.log(key);
+
+                        //console.log(Object.keys(this));
+
+                        //console.log(Object.getOwnPropertyNames(this));
+                         
+                        console.log("Marker => ", this.hasOwnProperty('_latlng'));
+                        let temMarker = this.hasOwnProperty('_latlng');
+                        if(temMarker){
+                            console.log("Remove Marker");
+                            drawnItems.removeLayer(this);
+                        }
+
+
+                        console.log("Polygon => ", this.hasOwnProperty('_latlngs'));
+                        let temPolygon = this.hasOwnProperty('_latlngs');
+                        if(temPolygon){
+                            console.log("Remove Polygon");
+                            drawnItems.removeLayer(this);
+                        }
+                        
+
+                        //let marker = Array.isArray(desenhos[key]);
+
+
+                        //verificar atributo latlangs
+                        //se for array é um polyg
+                        // se não um marker
+
+
+
+                    });
+                    //console.log(layerGroup.getLayers().length);
+
+                    //layerGroup.eachLayer(function (layer) {
+                    //    if (layer instanceof L.Marker){
+                    //        console.log("É um Marker");
+                    //    }
+
+                    //        if (layer instanceof L.Polygon) {
+                    //        console.log("É um Polygon");
+                    //        }
+                    //});
+
+                    //layerGroup.eachLayer(function (layer) {
+
+                    //    if (layer.id === 'marker')
+                    //        console.log("ë um marker");
+                    //});
+
+                    
+                    var layer = event.layer;
+
+                    let type = event.layerType;
+
+
+                    if (type === 'marker') {
+                        
+                        //layerGroup.clearLayers();
+                        //drawnItems.clearLayers();
+
+
+                        //map.removeLayer(layerGroup);
+
+                        var curPos = layer.getLatLng();
+
+                        $("#Latitude").val(curPos.lat);
+                        $("#Latitude").attr("value", curPos.lat);
+                        $("#Longitude").val(curPos.lng);
+                        $("#Longitude").attr("value", curPos.lng);
+
+                        //layer._leaftlet_id = "marker";
+                        drawnItems.addLayer(layer);
+                    }
+                    
+
+                    if (type === 'polygon') {
+                        
+                        cordinates = layer.getLatLngs();
+                        //console.log("Coordenadas: ", cordinates);
+
+                        var area = L.GeometryUtil.geodesicArea(cordinates[0]);
+                        var readableArea = L.GeometryUtil.readableArea(area, true);
+                        //console.log("Área: ", readableArea);
+                        //layer._leaftlet_id = "polygon";
+                        drawnItems.addLayer(layer);
+                    }
+
+
+                    
+                });*@
