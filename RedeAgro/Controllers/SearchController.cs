@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RedeAgro.Intefaces;
-using RedeAgro.Models;
 using RedeAgro.Models.Filtros;
-using System.Data;
 
 namespace RedeAgro.Controllers
 {

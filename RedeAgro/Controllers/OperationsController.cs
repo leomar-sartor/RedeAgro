@@ -44,7 +44,7 @@ namespace RedeAgro.Controllers
             {
                 UserApp appUser = new UserApp
                 {
-                    UserName = user.Name,
+                    UserName = user.Email,
                     Email = user.Email,
                     EmailConfirmed = true
                 };
@@ -80,7 +80,7 @@ namespace RedeAgro.Controllers
 
             return View();
         }
-
+        
         public IActionResult CreateRole() => View();
 
         [Authorize(Roles = "ADMIN")]

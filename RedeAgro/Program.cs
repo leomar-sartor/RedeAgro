@@ -17,6 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IHttpContextAccessor, HttpContextAccessor>();
 
+
 MongoDbConfig? mongoDbSettings = builder.Configuration.GetSection(nameof(MongoDbConfig)).Get<MongoDbConfig>();
 
 //https://github.com/matteofabbri/AspNetCore.Identity.Mongo/blob/master/README.md

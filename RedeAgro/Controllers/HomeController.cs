@@ -25,8 +25,6 @@ namespace RedeAgro.Controllers
             return View();
         }
 
-        
-
         public IActionResult Privacy()
         {
             return View();

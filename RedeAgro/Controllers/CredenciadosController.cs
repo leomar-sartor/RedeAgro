@@ -1,19 +1,15 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using RedeAgro.Entidade;
 using RedeAgro.Intefaces;
 using RedeAgro.Models;
 using RedeAgro.Models.ViewModels;
-using RedeAgro.Object;
 using RedeAgro.Repositories;
 using System.Data;
-using System.Xml.Linq;
-using System.Linq;
 
 namespace RedeAgro.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
+    [Authorize(Roles = "ADMIN, USER")]
     public class CredenciadosController : Controller
     {
         private readonly IHttpContextAccessor _contextAccessor;
